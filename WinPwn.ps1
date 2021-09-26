@@ -138,45 +138,7 @@ function pathCheck
 
 }
 
-function sharpcradle{
-<#
-    .DESCRIPTION
-        Download .NET Binary to RAM.
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
-    #>
-        Param
-    (
-        [switch]
-        $allthosedotnet,
-	    [switch]
-        $web,
-        [string]
-        $argument1,
-        [string]
-        $argument2,
-        [string]
-        $argument3,
-        [Switch]
-        $consoleoutput,
-        [switch]
-        $noninteractive
-    )
-    
-    if(!$consoleoutput){pathcheck}
-    BlockEtw
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-    if ($allthosedotnet)
-    {
-        @'
-             
-__        ___       ____                 
-\ \      / (_)_ __ |  _ \__      ___ __  
- \ \ /\ / /| | '_ \| |_) \ \ /\ / | '_ \ 
-  \ V  V / | | | | |  __/ \ V  V /| | | |
-   \_/\_/  |_|_| |_|_|     \_/\_/ |_| |_|
-   --> Automate some internal Penetrationtest processes
-'@
+
         if ($noninteractive)
         {
             Write-Host -ForegroundColor Yellow 'Executing Seatbelt.'
