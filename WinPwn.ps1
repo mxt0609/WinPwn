@@ -246,7 +246,7 @@ function Localreconmodules
         browserpwn -noninteractive
         dotnet -noninteractive
         passhunt -local $true -noninteractive
-        sessionGopher -noninteractive
+        
         sensitivefiles -noninteractive
         return;
     }
@@ -256,7 +256,7 @@ function Localreconmodules
         powershellsensitive -noninteractive -consoleoutput
         browserpwn -noninteractive -consoleoutput
         dotnet -noninteractive -consoleoutput 
-        sessionGopher -noninteractive -consoleoutput
+        
         sensitivefiles -noninteractive -consoleoutput
         return;    
     }
@@ -273,7 +273,7 @@ function Localreconmodules
              3{browserpwn}
              4{dotnet}
              5{passhunt -local $true}
-             6{sessiongopher}
+             
              7{sensitivefiles}
              8{morerecon}
              9{dotnetsearch}
@@ -295,17 +295,9 @@ function Generalrecon{
     
     
     
-    $Versions = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse |
-  Get-ItemProperty -name Version, Release -EA 0 |
-  Where-Object { $_.PSChildName -match '^(?!S)\p{L}'} |
-  Select-Object @{name = ".NET Framework"; expression = {$_.PSChildName}}, 
-@{name = "Product"; expression = {$Lookup[$_.Release]}},Version, Release
     
     if(!$consoleoutput)
-    {
-        $Versions >> "$currentPath\LocalRecon\NetFrameworkVersionsInstalled.txt"
-    }
-    else
+  
     
 
     #Collecting usefull Informations
@@ -340,51 +332,8 @@ function Generalrecon{
 	}
     else
     {
-        Write-Host -ForegroundColor Yellow '--------------> Collecting local system Informations for later lookup, saving them to .\LocalRecon\ ---------->'
-        systeminfo 
-        Write-Host -ForegroundColor Yellow '-------> Getting Patches'
-	    wmic qfe 
-        wmic os get osarchitecture 
-	    Write-Host -ForegroundColor Yellow '-------> Getting environment variables'
-        Get-ChildItem Env: | ft Key,Value 
-	    Write-Host -ForegroundColor Yellow '-------> Getting connected drives'
-        Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| ft Name,Root 
-        Write-Host -ForegroundColor Yellow '-------> Getting current user Privileges'
-	    whoami /priv 
-        Write-Host -ForegroundColor Yellow '-------> Getting local user account information'
-        Get-LocalUser | ft Name,Enabled,LastLogon
-        Write-Host -ForegroundColor Yellow '-------> Getting local Accounts/Users + Password policy'
-	    net accounts
-        Get-LocalGroup | ft Name
-	    Write-Host -ForegroundColor Yellow '-------> Getting network interfaces, route information, Arp table'
-        Get-NetIPConfiguration | ft InterfaceAlias,InterfaceDescription,IPv4Address
-        Get-DnsClientServerAddress -AddressFamily IPv4 | ft 
-        Get-NetRoute -AddressFamily IPv4 | ft DestinationPrefix,NextHop,RouteMetric,ifIndex 
-        Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State 
-        netstat -ano 
-        Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse | Get-ItemProperty -Name Version, Release -ErrorAction 0 | where { $_.PSChildName -match '^(?!S)\p{L}'} | select PSChildName, Version, Release 
-        Write-Host -ForegroundColor Yellow '-------> Getting Shares'
-	    net share
-	    Write-Host -ForegroundColor Yellow '-------> Getting hosts file content'
-	    get-content $env:windir\System32\drivers\etc\hosts | out-string 
-	    Get-ChildItem -Path HKLM:\Software\*\Shell\open\command\ 
-    }
-    #Stolen and integrated from 411Hall's JAWS
-	Write-Host -ForegroundColor Yellow 'Searching for files with Full Control and Modify Access'
-	Function Get-FireWallRule
-    	    {
-	    	Param ($Name, $Direction, $Enabled, $Protocol, $profile, $action, $grouping)
-    		$Rules=(New-object -comObject HNetCfg.FwPolicy2).rules
-    		If ($name)      {$rules= $rules | where-object {$_.name     -like $name}}
-    		If ($direction) {$rules= $rules | where-object {$_.direction  -eq $direction}}
-    		If ($Enabled)   {$rules= $rules | where-object {$_.Enabled    -eq $Enabled}}
-    		If ($protocol)  {$rules= $rules | where-object {$_.protocol   -eq $protocol}}
-    		If ($profile)   {$rules= $rules | where-object {$_.Profiles -bAND $profile}}
-    		If ($Action)    {$rules= $rules | where-object {$_.Action     -eq $Action}}
-    		If ($Grouping)  {$rules= $rules | where-object {$_.Grouping -like $Grouping}}
-    		$rules
-	    }
-	    
+ 
+    
 	    if(!$consoleoutput){Get-firewallRule -enabled $true | sort direction,name | format-table -property Name,localPorts,direction | out-string -Width 4096 >> "$currentPath\LocalRecon\Firewall_Rules.txt"}else{Get-firewallRule -enabled $true | sort direction,name | format-table -property Name,localPorts,direction | out-string -Width 4096} 
 	    
 	    $output = " Files with Full Control and Modify Access`r`n"
@@ -399,12 +348,7 @@ function Generalrecon{
             	    }
         	        catch{$output = $output +   "`nFailed to read more files`r`n"}
             }
-	    Write-Host -ForegroundColor Yellow 'Searching for folders with Full Control and Modify Access'
-	    $output = $output +  "-----------------------------------------------------------`r`n"
-    	    $output = $output +  " Folders with Full Control and Modify Access`r`n"
-    	    $output = $output +  "-----------------------------------------------------------`r`n"
-    	    $folders = get-childitem C:\
-    	    foreach ($folder in $folders)
+	    
 	        {
         	    try 
 		        {
