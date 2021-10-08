@@ -207,15 +207,8 @@ function Kittielocal
         return
     }
       
-function testtemp
-{
- if(!(Test-Path -Path C:\temp\))
- {
-    mkdir C:\temp
- }
+
 }
-
-
 
 function Localreconmodules
 {
@@ -366,15 +359,8 @@ function Generalrecon{
 	 Write-Host -ForegroundColor Yellow '-------> Checking for potential sensitive user files'
 	 if(!$consoleoutput){get-childitem "C:\Users\" -recurse -Include *.zip,*.rar,*.7z,*.gz,*.conf,*.rdp,*.kdbx,*.crt,*.pem,*.ppk,*.txt,*.xml,*.vnc.*.ini,*.vbs,*.bat,*.ps1,*.cmd -EA SilentlyContinue | %{$_.FullName } | out-string >> "$currentPath\LocalRecon\Potential_Sensitive_User_Files.txt"}else{get-childitem "C:\Users\" -recurse -Include *.zip,*.rar,*.7z,*.gz,*.conf,*.rdp,*.kdbx,*.crt,*.pem,*.ppk,*.txt,*.xml,*.vnc.*.ini,*.vbs,*.bat,*.ps1,*.cmd -EA SilentlyContinue | %{$_.FullName } | out-string} 
 	 
-	 Write-Host -ForegroundColor Yellow '-------> Checking AlwaysInstallElevated'
-	 $HKLM = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Installer"
-     $HKCU =  "HKCU:\SOFTWARE\Policies\Microsoft\Windows\Installer"
-     if (($HKLM | test-path) -eq "True") 
-     {
-         if (((Get-ItemProperty -Path $HKLM -Name AlwaysInstallElevated).AlwaysInstallElevated) -eq 1)
-         {
-        		if(!$consoleoutput){echo "AlwaysInstallElevated enabled on this host!" >> "$currentPath\Vulnerabilities\AlwaysInstallElevatedactive.txt"}else{Write-Host -ForegroundColor Red "AlwaysInstallElevated enabled on this host!"}
-         }
+	 
+     
      }
      if (($HKCU | test-path) -eq "True") 
      {
@@ -383,26 +369,7 @@ function Generalrecon{
         		if(!$consoleoutput){echo "AlwaysInstallElevated enabled on this host!" >> "$currentPath\Vulnerabilities\AlwaysInstallElevatedactive.txt"}else{Write-Host -ForegroundColor Red "AlwaysInstallElevated enabled on this host!"}
          }
      }
-	 Write-Host -ForegroundColor Yellow '-------> Checking if Netbios is active'
-	 $EnabledNics= @(gwmi -query "select * from win32_networkadapterconfiguration where IPEnabled='true'")
-
-	 $OutputObj = @()
-         foreach ($Network in $EnabledNics) 
-	     {
-	 	    If($network.tcpipnetbiosoptions) 
-	 	    {	
-	 		    $netbiosEnabled = [bool]$network
-	       if ($netbiosEnabled){Write-Host 'Netbios is active, vulnerability found.'; echo "Netbios Active, check localrecon folder for network interface Info" >> "$currentPath\Vulnerabilities\NetbiosActive.txt"}
-	 	    }
-	 	    $nic = gwmi win32_networkadapter | where {$_.index -match $network.index}
-	 	    $OutputObj  += @{
-	 		Nic = $nic.netconnectionid
- 	 		NetBiosEnabled = $netbiosEnabled
-	 	}
-	 }
-	 $out = $OutputObj | % { new-object PSObject -Property $_} | select Nic, NetBiosEnabled| ft -auto
-	 if(!$consoleoutput){$out >> "$currentPath\LocalRecon\NetbiosInterfaceInfo.txt"}else{$out}
-	    
+	 
 	 Write-Host -ForegroundColor Yellow '-------> Checking if IPv6 is active (mitm6 attacks)'
 	 $IPV6 = $false
 	 $arrInterfaces = (Get-WmiObject -class Win32_NetworkAdapterConfiguration -filter "ipenabled = TRUE").IPAddress
