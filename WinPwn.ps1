@@ -565,54 +565,11 @@ function Browserpwn{
     }
 }
 
-function Get-IndexedFiles 
 {
-     param (
-     [Parameter(Mandatory=$true)][string]$Pattern)  
-     
-     $drives = (Get-PSDrive -PSProvider FileSystem).Root
-     foreach ($drive in $drives)
-     {
-     Write-Host -ForegroundColor Yellow "Searching for files in drive $drive" 
-     $Path = $drive 
-        
-     $pattern = $pattern -replace "\*", "%"  
-     $path = $path + "\%"
-    
-     $con = New-Object -ComObject ADODB.Connection
-     $rs = New-Object -ComObject ADODB.Recordset
-    
-     Try {
-     $con.Open("Provider=Search.CollatorDSO;Extended Properties='Application=Windows';")}
-     Catch {
-     "[-] Indexed file search provider not available";Break
-     }
-     $rs.Open("SELECT System.ItemPathDisplay FROM SYSTEMINDEX WHERE System.FileName LIKE '" + $pattern + "' " , $con)
-    
-     While(-Not $rs.EOF){
-     $rs.Fields.Item("System.ItemPathDisplay").Value
-     $rs.MoveNext()
-     }
-     }
-
-
-             
-__        ___       ____                 
-\ \      / (_)_ __ |  _ \__      ___ __  
- \ \ /\ / /| | '_ \| |_) \ \ /\ / | '_ \ 
-  \ V  V / | | | | |  __/ \ V  V /| | | |
-   \_/\_/  |_|_| |_|_|     \_/\_/ |_| |_|
-
-   --> DomainShares @S3cur3Th1sSh1t
-
-'@
-    do
-    {
         Write-Host "================ WinPwn ================"
         Write-Host -ForegroundColor Green '1. Passhunt search for Powerview found shares!'
         Write-Host -ForegroundColor Green '2. Run Snaffler! '
-        Write-Host -ForegroundColor Green '3. Go back '
-        Write-Host "================ WinPwn ================"
+        
         $masterquestion = Read-Host -Prompt 'Please choose wisely, master:'
 
         Switch ($masterquestion) 
@@ -627,7 +584,7 @@ __        ___       ____
 
 function Snaffler
 {
-    # @l0ss and @Sh3r4 - snaffler
+    
     [CmdletBinding()]
 
     Param
